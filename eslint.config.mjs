@@ -5,6 +5,7 @@ import prettierPlugin from 'eslint-plugin-prettier';
 import pluginVue from 'eslint-plugin-vue';
 import globals from 'globals';
 import tseslint from 'typescript-eslint';
+import vueParser from 'vue-eslint-parser';
 
 export default [
   { ignores: ['node_modules/**', 'dist/**'] },
@@ -21,6 +22,16 @@ export default [
     },
   },
   {
+    files: ['**/*.ts', '**/*.vue'],
+    languageOptions: {
+      parser: vueParser,
+      parserOptions: {
+        parser: tseslint.parser,
+        extraFileExtensions: ['.vue'],
+      },
+    },
+  },
+  {
     rules: {
       'no-console': 'warn',
       'no-unused-vars': 'off',
@@ -28,6 +39,7 @@ export default [
       '@typescript-eslint/no-explicit-any': 'warn',
       '@typescript-eslint/ban-ts-comment': 'warn',
       '@typescript-eslint/no-unused-expressions': 'warn',
+      'vue/multi-word-component-names': 'off',
     },
   },
   eslintConfigPrettier,
