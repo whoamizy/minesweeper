@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia';
 import { computed, ref } from 'vue';
 
-const INIT_SECONDS = 180;
+const INIT_SECONDS = 0;
 
 export const useTimerStore = defineStore('timer', () => {
   const totalSeconds = ref(INIT_SECONDS);
@@ -17,10 +17,7 @@ export const useTimerStore = defineStore('timer', () => {
 
   function startTimer() {
     resetTimer();
-    timerId.value = setInterval(() => {
-      totalSeconds.value--;
-      if (totalSeconds.value <= 0) stopTimer();
-    }, 1000);
+    timerId.value = setInterval(() => totalSeconds.value++, 1000);
   }
 
   function stopTimer() {
