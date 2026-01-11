@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
+import { useTimerStore } from '../useTimerStore';
 import type { ICell } from './types';
 
 const MINES = 10;
@@ -8,14 +9,19 @@ const COLS = 10;
 const BOARD_SIZE = ROWS * COLS;
 
 export const useCellsStore = defineStore('cells', () => {
+  const timerStore = useTimerStore();
+  const { startTimer, stopTimer } = timerStore;
+
   const board = ref<ICell[]>([]);
   const isGameOver = ref(false);
   const minesLeft = ref(MINES);
+  const isGameStarted = ref(false);
 
   function initBoard() {
     isGameOver.value = false;
     board.value = [];
     minesLeft.value = MINES;
+    isGameStarted.value = false;
 
     for (let i = 0; i < BOARD_SIZE; i++) {
       const cell: ICell = {
@@ -34,7 +40,7 @@ export const useCellsStore = defineStore('cells', () => {
 
   function setMines() {
     let totalMines = 0;
-    while (totalMines <= MINES) {
+    while (totalMines < MINES) {
       const randomIndex = Math.floor(Math.random() * BOARD_SIZE);
       const cell = board.value[randomIndex];
       if (!cell) continue;
@@ -75,6 +81,10 @@ export const useCellsStore = defineStore('cells', () => {
   }
 
   function openCell(i: number) {
+    if (!isGameStarted.value) {
+      isGameStarted.value = true;
+      startTimer();
+    }
     const cell = board.value[i];
     if (isGameOver.value || !cell || cell.isOpen) return;
     if (cell.isMine) {
@@ -82,6 +92,7 @@ export const useCellsStore = defineStore('cells', () => {
         if (cell.isMine) cell.isOpen = true;
       });
       isGameOver.value = true;
+      stopTimer();
       // TODO: modal with restart button
       alert('You lost');
       return;
@@ -106,6 +117,7 @@ export const useCellsStore = defineStore('cells', () => {
     const openedCells = board.value.filter((cell) => cell.isOpen).length;
     if (openedCells === BOARD_SIZE - MINES) {
       isGameOver.value = true;
+      stopTimer();
       // TODO: modal with restart button
       alert('You win');
       return true;
@@ -114,10 +126,18 @@ export const useCellsStore = defineStore('cells', () => {
   }
 
   function toggleFlag(i: number) {
+    if (!isGameStarted.value) {
+      isGameStarted.value = true;
+      startTimer();
+    }
     const cell = board.value[i];
     if (!cell || cell.isOpen || isGameOver.value) return;
+    if (minesLeft.value) {
+      minesLeft.value--;
+    } else {
+      return;
+    }
     cell.isFlag = !cell.isFlag;
-    if (minesLeft.value) minesLeft.value--;
   }
 
   return {
