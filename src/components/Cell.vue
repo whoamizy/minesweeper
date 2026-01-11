@@ -5,6 +5,7 @@
     @click.prevent="emit('openCell', cell.id)"
     @click.prevent.right="emit('toggleFlag', cell.id)"
     @contextmenu.prevent
+    @dblclick.prevent="emit('toggleFlag', cell.id)"
   >
     <span v-if="cell.isOpen && cell.isMine">
       <img src="/icons/bomb.svg" alt="Bomb" />
