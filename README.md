@@ -1,1 +1,1 @@
-# Vue Minimal Template
+# Minesweeper
