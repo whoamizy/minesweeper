@@ -7,10 +7,10 @@
     @contextmenu.prevent
   >
     <span v-if="cell.isOpen && cell.isMine">
-      <img src="/public/icons/bomb.svg" alt="Bomb" />
+      <img src="/icons/bomb.svg" alt="Bomb" />
     </span>
     <span v-else-if="cell.isFlag">
-      <img src="/public/icons/flag.svg" alt="Flag" />
+      <img src="/icons/flag.svg" alt="Flag" />
     </span>
     <span v-else-if="cell.isOpen">
       {{ cell.minesAround !== 0 ? cell.minesAround : '' }}
