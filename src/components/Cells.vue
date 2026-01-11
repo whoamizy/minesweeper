@@ -3,11 +3,9 @@
     <Cell
       v-for="(cell, idx) in board"
       :key="cell.id"
-      :class="{ 'color-white bg-red-500': cell.isMine }"
-      @click="openCell(idx)"
-    >
-      {{ cell.isOpen ? cell.minesAround : '' }}
-    </Cell>
+      :cell
+      @open-cell="openCell(idx)"
+    />
   </div>
 </template>
 
