@@ -73,7 +73,7 @@ export const useCellsStore = defineStore('cells', () => {
 
   function openCell(i: number) {
     const cell = board.value[i];
-    if (isGameOver.value || !cell || cell.isOpen || cell.isFlag) return;
+    if (isGameOver.value || !cell || cell.isOpen) return;
     if (cell.isMine) {
       board.value.forEach((cell) => {
         if (cell.isMine) cell.isOpen = true;
@@ -82,6 +82,7 @@ export const useCellsStore = defineStore('cells', () => {
       // TODO: modal with restart button
       return;
     }
+    cell.isFlag = false;
     cell.isOpen = true;
     if (checkWin()) return;
     checkNeighbors(i);
