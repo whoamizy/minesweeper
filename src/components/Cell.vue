@@ -6,11 +6,11 @@
     @click.prevent.right="emit('toggleFlag', cell.id)"
     @contextmenu.prevent
   >
-    <span v-if="cell.isMine">
-      <!-- TODO: mine icon -->
+    <span v-if="cell.isOpen && cell.isMine">
+      <img src="/public/icons/bomb.svg" alt="Bomb" />
     </span>
     <span v-else-if="cell.isFlag">
-      <!-- TODO: flag icon -->
+      <img src="/public/icons/flag.svg" alt="Flag" />
     </span>
     <span v-else-if="cell.isOpen">
       {{ cell.minesAround !== 0 ? cell.minesAround : '' }}
@@ -35,15 +35,9 @@ const props = defineProps<IProps>();
 const emit = defineEmits<IEmits>();
 
 const classes = computed(() => {
-  if (props.cell.isOpen && !props.cell.isMine) {
-    return 'bg-gray-50';
-  }
-  if (props.cell.isOpen && props.cell.isMine) {
-    return 'bg-red-500';
-  }
-  if (props.cell.isFlag) {
-    return 'bg-amber-200';
-  }
+  if (props.cell.isOpen && !props.cell.isMine) return 'bg-gray-50';
+  if (props.cell.isOpen && props.cell.isMine) return 'bg-red-500';
+  if (props.cell.isFlag) return 'cursor-pointer bg-amber-200';
   return 'cursor-pointer bg-gray-200 hover:bg-gray-500';
 });
 </script>
