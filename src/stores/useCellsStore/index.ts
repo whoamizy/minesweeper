@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
 import { useTimerStore } from '../useTimerStore';
-import type { ICell } from './types';
+import type { ICell, TGameStatus } from './types';
 
 const MINES = 10;
 const ROWS = 10;
@@ -10,18 +10,21 @@ const BOARD_SIZE = ROWS * COLS;
 
 export const useCellsStore = defineStore('cells', () => {
   const timerStore = useTimerStore();
-  const { startTimer, stopTimer } = timerStore;
+  const { startTimer, stopTimer, resetTimer } = timerStore;
 
   const board = ref<ICell[]>([]);
   const isGameOver = ref(false);
   const minesLeft = ref(MINES);
   const isGameStarted = ref(false);
+  const gameStatus = ref<TGameStatus>('playing');
 
   function initBoard() {
     isGameOver.value = false;
     board.value = [];
     minesLeft.value = MINES;
     isGameStarted.value = false;
+    gameStatus.value = 'playing';
+    resetTimer();
 
     for (let i = 0; i < BOARD_SIZE; i++) {
       const cell: ICell = {
@@ -92,9 +95,8 @@ export const useCellsStore = defineStore('cells', () => {
         if (cell.isMine) cell.isOpen = true;
       });
       isGameOver.value = true;
+      gameStatus.value = 'lose';
       stopTimer();
-      // TODO: modal with restart button
-      alert('You lost');
       return;
     }
     if (cell.isFlag) {
@@ -117,9 +119,8 @@ export const useCellsStore = defineStore('cells', () => {
     const openedCells = board.value.filter((cell) => cell.isOpen).length;
     if (openedCells === BOARD_SIZE - MINES) {
       isGameOver.value = true;
+      gameStatus.value = 'win';
       stopTimer();
-      // TODO: modal with restart button
-      alert('You win');
       return true;
     }
     return false;
@@ -145,6 +146,8 @@ export const useCellsStore = defineStore('cells', () => {
     initBoard,
     openCell,
     toggleFlag,
+    isGameOver,
     minesLeft,
+    gameStatus,
   };
 });

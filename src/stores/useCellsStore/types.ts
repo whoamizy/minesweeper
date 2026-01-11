@@ -6,3 +6,5 @@ export interface ICell {
   minesAround: number;
   neighborhood: number[];
 }
+
+export type TGameStatus = 'win' | 'lose' | 'playing';
