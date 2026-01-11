@@ -104,9 +104,16 @@ export const useCellsStore = defineStore('cells', () => {
     return false;
   }
 
+  function toggleFlag(i: number) {
+    const cell = board.value[i];
+    if (!cell) return;
+    cell.isFlag = !cell.isFlag;
+  }
+
   return {
     board,
     initBoard,
     openCell,
+    toggleFlag,
   };
 });

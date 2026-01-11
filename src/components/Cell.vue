@@ -1,12 +1,7 @@
 <template>
   <button
     class="flex size-8 items-center justify-center border border-gray-400 transition"
-    :class="{
-      'bg-amber-200': cell.isFlag,
-      'bg-red-500': cell.isOpen && cell.isMine,
-      'bg-gray-50': cell.isOpen && !cell.isMine,
-      'cursor-pointer bg-gray-200 hover:bg-gray-500': !cell.isOpen,
-    }"
+    :class="classes"
     @click.prevent="emit('openCell', cell.id)"
     @click.prevent.right="emit('toggleFlag', cell.id)"
     @contextmenu.prevent
@@ -25,6 +20,7 @@
 
 <script setup lang="ts">
 import type { ICell } from '@/stores/useCellsStore/types';
+import { computed } from 'vue';
 
 interface IProps {
   cell: ICell;
@@ -35,6 +31,19 @@ interface IEmits {
   (e: 'toggleFlag', id: number): void;
 }
 
-defineProps<IProps>();
+const props = defineProps<IProps>();
 const emit = defineEmits<IEmits>();
+
+const classes = computed(() => {
+  if (props.cell.isOpen && !props.cell.isMine) {
+    return 'bg-gray-50';
+  }
+  if (props.cell.isOpen && props.cell.isMine) {
+    return 'bg-red-500';
+  }
+  if (props.cell.isFlag) {
+    return 'bg-amber-200';
+  }
+  return 'cursor-pointer bg-gray-200 hover:bg-gray-500';
+});
 </script>
