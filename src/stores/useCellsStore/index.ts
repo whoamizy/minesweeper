@@ -106,7 +106,7 @@ export const useCellsStore = defineStore('cells', () => {
 
   function toggleFlag(i: number) {
     const cell = board.value[i];
-    if (!cell) return;
+    if (!cell || cell.isOpen || isGameOver.value) return;
     cell.isFlag = !cell.isFlag;
   }
 
