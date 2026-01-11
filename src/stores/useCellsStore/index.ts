@@ -10,10 +10,13 @@ const BOARD_SIZE = ROWS * COLS;
 export const useCellsStore = defineStore('cells', () => {
   const board = ref<ICell[]>([]);
   const isGameOver = ref(false);
+  const minesLeft = ref(MINES);
 
   function initBoard() {
     isGameOver.value = false;
     board.value = [];
+    minesLeft.value = MINES;
+
     for (let i = 0; i < BOARD_SIZE; i++) {
       const cell: ICell = {
         id: i,
@@ -80,9 +83,13 @@ export const useCellsStore = defineStore('cells', () => {
       });
       isGameOver.value = true;
       // TODO: modal with restart button
+      alert('You lost');
       return;
     }
-    cell.isFlag = false;
+    if (cell.isFlag) {
+      cell.isFlag = false;
+      minesLeft.value++;
+    }
     cell.isOpen = true;
     if (checkWin()) return;
     checkNeighbors(i);
@@ -100,6 +107,7 @@ export const useCellsStore = defineStore('cells', () => {
     if (openedCells === BOARD_SIZE - MINES) {
       isGameOver.value = true;
       // TODO: modal with restart button
+      alert('You win');
       return true;
     }
     return false;
@@ -109,6 +117,7 @@ export const useCellsStore = defineStore('cells', () => {
     const cell = board.value[i];
     if (!cell || cell.isOpen || isGameOver.value) return;
     cell.isFlag = !cell.isFlag;
+    if (minesLeft.value) minesLeft.value--;
   }
 
   return {
@@ -116,5 +125,6 @@ export const useCellsStore = defineStore('cells', () => {
     initBoard,
     openCell,
     toggleFlag,
+    minesLeft,
   };
 });
