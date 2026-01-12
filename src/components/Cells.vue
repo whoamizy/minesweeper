@@ -12,11 +12,12 @@
 
 <script setup lang="ts">
 import { useCellsStore } from '@/stores/useCellsStore';
-import { onMounted, toRefs } from 'vue';
+import { storeToRefs } from 'pinia';
+import { onMounted } from 'vue';
 import Cell from './Cell.vue';
 
 const cellsStore = useCellsStore();
-const { board } = toRefs(cellsStore);
+const { board } = storeToRefs(cellsStore);
 const { initBoard, openCell, toggleFlag } = cellsStore;
 
 onMounted(() => {

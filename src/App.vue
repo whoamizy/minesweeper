@@ -9,12 +9,12 @@
 </template>
 
 <script setup lang="ts">
-import { toRefs } from 'vue';
+import { storeToRefs } from 'pinia';
 import Cells from './components/Cells.vue';
 import GameInfo from './components/GameInfo.vue';
 import Header from './components/Header.vue';
 import { useCellsStore } from './stores/useCellsStore';
 
 const cellsStore = useCellsStore();
-const { isGameOver } = toRefs(cellsStore);
+const { isGameOver } = storeToRefs(cellsStore);
 </script>
