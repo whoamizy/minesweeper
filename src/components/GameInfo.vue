@@ -12,10 +12,11 @@
 
 <script setup lang="ts">
 import { useCellsStore } from '@/stores/useCellsStore';
-import { computed, toRefs } from 'vue';
+import { storeToRefs } from 'pinia';
+import { computed } from 'vue';
 
 const cellsStore = useCellsStore();
-const { gameStatus } = toRefs(cellsStore);
+const { gameStatus } = storeToRefs(cellsStore);
 const { initBoard } = cellsStore;
 
 const statusText = computed(() => {

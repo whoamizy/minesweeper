@@ -12,10 +12,10 @@
 <script setup lang="ts">
 import { useCellsStore } from '@/stores/useCellsStore';
 import { useTimerStore } from '@/stores/useTimerStore';
-import { toRefs } from 'vue';
+import { storeToRefs } from 'pinia';
 
 const timerStore = useTimerStore();
-const { timer } = toRefs(timerStore);
+const { timer } = storeToRefs(timerStore);
 const cellsStore = useCellsStore();
-const { minesLeft } = toRefs(cellsStore);
+const { minesLeft } = storeToRefs(cellsStore);
 </script>
